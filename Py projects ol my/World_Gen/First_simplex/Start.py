@@ -8,22 +8,28 @@ pygame.init()
 window = pygame.display.set_mode((1000, 1000))
 
 # Cell parameters
-width, height = 10, 10 # Defines width and height of each cell in the grid
+width, height = 10, 10  # Defines width and height of each cell in the grid
 
-scale = 0.5 # Defines the scale of the noise function, affecting the frequency of the noise pattern
+scale = 0.1 # Defines the scale of the noise function, affecting the frequency of the noise pattern
 
 
 
 opensimplex.random_seed() # Generates a random seed for the noise function
 
-xs = np.arange(0, 1000, width*scale) # Creates an array of x-coordinates for the grid cells
-ys = np.arange(0, 1000, height*scale) # Creates an array of y-coordinates for the grid cells
+xs = np.arange(0, 100) # Creates an array of x-coordinates for the grid cells
+ys = np.arange(0, 100) # Creates an array of y-coordinates for the grid cells
 
-print(xs)
+xs = xs * scale # Scales the x-coordinates by the defined scale factor
+ys = ys * scale # Scales the y-coordinates by the defined scale factor
+
+print("xs.shape:", xs.shape, "xs length", len(xs))
+print("ys.shape:", ys.shape, "ys length", len(ys))
 
 
 grid= opensimplex.noise2array(xs, ys) # Generates a 2D array of noise values for the grid cells using the OpenSimplex noise function
 
+print ("grid length: ", len(grid))
+print ("grid: ", grid)
 
 def color(value):
     # Maps the noise value to a color
@@ -37,7 +43,7 @@ def color(value):
         return (255, 255, 255) # White for high values
 
 
-def draw_grid():
+def draw_grid(): # Draws the grid of cells on the Pygame window
     for i in range(len(grid)):
         for j in range(len(grid[i])):
             pygame.draw.rect(window, color(grid[i][j]), (j * width, i * height, width, height))
