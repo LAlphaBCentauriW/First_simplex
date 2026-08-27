@@ -19,9 +19,12 @@ opensimplex.random_seed() # Generates a random seed for the noise function
 xs = np.arange(0, 100) # Creates an array of x-coordinates for the grid cells
 ys = np.arange(0, 100) # Creates an array of y-coordinates for the grid cells
 
+print("before scaling: ", xs, ys)
+
 xs = xs * scale # Scales the x-coordinates by the defined scale factor
 ys = ys * scale # Scales the y-coordinates by the defined scale factor
 
+print("after scaling: ", xs, ys)
 print("xs.shape:", xs.shape, "xs length", len(xs))
 print("ys.shape:", ys.shape, "ys length", len(ys))
 
@@ -30,17 +33,50 @@ grid= opensimplex.noise2array(xs, ys) # Generates a 2D array of noise values for
 
 print ("grid length: ", len(grid))
 print ("grid: ", grid)
+print("grid min: ", grid.min())
+print("grid max: ", grid.max())
 
-def color(value):
+COLORS = {
+    "OCEAN": (54, 141, 197),
+    "blue": (0, 0, 255),
+    "cyan": (0, 255, 255),
+    "white": (255, 255, 255),
+    "Shallow water": (51, 153, 204),
+    "Sand": (237, 201, 175),
+    "Grassland / plains": (144, 238, 144),
+    "Forest": (34, 139, 34)
+}
+
+def color(value): # need new bands brown - 
     # Maps the noise value to a color
-    if value < -0.5:
-        return (0, 0, 128) # Dark blue for low values
-    elif value < 0:
-        return (0, 0, 255) # Blue for medium-low values
-    elif value < 0.5:
-        return (0, 255, 255) # Cyan for medium-high values
+    # if value < -0.5:
+    #     return COLORS["OCEAN"] # Dark blue for low values
+    # elif value < 0:
+    #     return COLORS["blue"] # Blue for medium-low values
+    # elif value < 0.5:
+    #     return COLORS["Sand"] # Cyan for medium-high values
+    # else:
+    #     return COLORS["white"] # White for high values
+
+    low = -1.0
+    low_end = -0.5
+    medium_low = -0.25
+    mid = 0.0
+    high_medium = 0.25
+    high_end = 0.5
+    high = 1.0
+
+    if value < low_end:
+            return COLORS["OCEAN"] # Dark blue for low values
+    elif value < medium_low:
+            return COLORS["Shallow water"] # Blue for medium-low values
+    elif value < high_medium:
+            return COLORS["Sand"] # Cyan for medium-high values
+    elif value < high_end:
+            return COLORS["Grassland / plains"] # Cyan for medium-high values
     else:
-        return (255, 255, 255) # White for high values
+            return COLORS["Forest"] # White for high values
+    
 
 
 def draw_grid(): # Draws the grid of cells on the Pygame window
